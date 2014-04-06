@@ -63,7 +63,7 @@ void distance_measurement(int pos){
 }
 
 void update_course(int pos, int dist){
-  digitalWrite(FORWARDPIN, HIGH);
+  digitalWrite(FORWARDPIN, LOW);
   digitalWrite(BACKWARDPIN, LOW);
   digitalWrite(LEFTPIN, LOW);
   digitalWrite(RIGHTPIN, LOW);
