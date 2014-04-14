@@ -3,19 +3,25 @@
 #define SERVODELAY 3
 #define MEASUREMENTINTERVAL 30
 #define SERVOPIN 11
-#define USSENSORPIN 2 //Pata del MEGA cambiar al UNO
+#define USSENSORPIN 2
 #define MINDIST 8
-#define MOTOR_A1 3
+#define MOTOR_A1 3  
 #define MOTOR_A2 5
 #define MOTOR_B1 6
 #define MOTOR_B2 9
+#define N_SAMPLES 6 // number of samples that the sensor are going to take
 
 Servo myservo;
- 
+
 int pos = 0;
-int interval = 20 ;
 int last_measurement_position = 0;
 float dist = 0;
+int angle = 15;
+int *current_angle = &angle;
+int dir = 1;
+int *current_dir = &dir;
+float field_vision[N_SAMPLES];
+
 
 float us_distance(int us_pin);
 void distance_measurement(int pos);
@@ -26,7 +32,9 @@ void moveBack();
 void moveLeft();
 void moveRight();
 void standby();
-void get_state();
+void set_state();
+void servo_move(int angle,int dir1);
+
 
 void setup()
 {
@@ -47,12 +55,12 @@ void setup()
 
 
 void loop()
-{
-  //sweep_sensor();
-  set_state(1,1000);
-  set_state(2,1000);
-  set_state(4,1000);
-  set_state(3,1000);
+{  
+  for(pos = 0; pos <= 5; pos += 1){
+  Serial.println(field_vision[pos]);
+  }
+  delay(1500);
+  
 }
 
  
@@ -78,7 +86,6 @@ void distance_measurement(int pos){
 
   Serial.print(" Position: ");
   Serial.print(pos);
-  Serial.print(" °\n");
   Serial.print(" Distance: ");
   dist = us_distance(USSENSORPIN);
   Serial.print(dist);
@@ -88,23 +95,7 @@ void distance_measurement(int pos){
 }
 
 void update_course(int pos, int dist){
-  /*
-  if (pos < 60){
-    if (dist < MINDIST) {
-      digitalWrite(RIGHTPIN, HIGH);
-    }
-  } else if (pos < 120){
-    if (dist < MINDIST) {
-      digitalWrite(BACKWARDPIN, HIGH);
-    } else {
-      digitalWrite(FORWARDPIN, HIGH);
-    }
-  } else {
-    if (dist < MINDIST) {
-      digitalWrite(LEFTPIN, HIGH);
-    }
-  }
-*/
+
 }
 
 
@@ -130,6 +121,69 @@ void sweep_sensor(){
   }
   
 }
+void servo_move(int angle,int dir1){
+  
+  switch(angle){
+    myservo.write(angle);
+    case(15):
+      Serial.println("15 degrees");
+      *current_angle = 45;
+      *current_dir = 1;
+      field_vision[0] = us_distance(USSENSORPIN);
+      break;  
+    case(45):
+      Serial.println("45 degrees");
+      field_vision[1] = us_distance(USSENSORPIN);
+      if (dir1 == 1){
+        *current_angle = 75;
+      }
+      else{
+        *current_angle = 15;
+      }
+      break;
+    case(75):
+      Serial.println("75 degrees");
+      field_vision[2] = us_distance(USSENSORPIN);
+      if (dir1 == 1){
+        *current_angle = 105;
+      }
+      else{
+        *current_angle = 45;
+      }
+      break;
+    case(105):
+      Serial.println("105 degrees");
+      field_vision[3] = us_distance(USSENSORPIN);
+      if (dir1 == 1){
+        *current_angle = 135;
+      }
+      else{
+        *current_angle = 75;
+      }
+      break;
+    case(135):
+      
+      Serial.println("135 degrees");
+      field_vision[4] = us_distance(USSENSORPIN);
+      if (dir1 == 1){
+        *current_angle = 165;
+      }
+      else{
+        *current_angle = 105;
+      }
+      break;
+    case(165):
+      Serial.println("165 degrees");
+      field_vision[5] = us_distance(USSENSORPIN);
+      *current_angle = 135;
+      *current_dir = -1;
+      break;
+    default:
+      Serial.println("Defaut State");
+      break;
+  }
+}
+
 
 //STATES OF THE MACHINE
 void move_foward(int t){
@@ -175,27 +229,28 @@ void standby(int t){
 void set_state(int state,int t){
   switch (state) {
     case (0):
-    Serial.print("Case1");
-    standby(t);
-    break;
+      Serial.print("Case 0");
+      standby(t);
+      break;
     case (1):
-    Serial.print("Case1");
-    move_foward(t);
-    break;
+      Serial.print("Case 1");
+      move_foward(t);
+      break;
     case (2):
-    Serial.print("Case2");
-    move_back(t);
-    break;
+      Serial.print("Case 2");
+      move_back(t);
+      break;
     case (3):
-    Serial.print("Case3");
-    move_left(t);
-    break;
+      Serial.print("Case 3");
+      move_left(t);
+      break;
     case (4):
-    Serial.print("Case4");
-    move_right(t);
-    break;
+      Serial.print("Case 4");
+      move_right(t);
+      break;
     default: 
       Serial.print("Default");
+      break;
   }
 }
 
