@@ -82,7 +82,7 @@ class ColorTracker(elementBase):
 				x,y,w,h = cv2.boundingRect(largest_contour)
 				self.center_x = x+(w/2)
 				self.center_y = y+(h/2)
-				print("Object center at: x=%i y=%i" %(self.center_x, self.center_y))
+				print("%s Object center at: x=%i y=%i" %(self.name, self.center_x, self.center_y))
 				cv2.rectangle(self.image,(x,y),(x+w,y+h),(0,240,240),2)
 				cv2.circle(self.image,(self.center_x, self.center_y),2,(0,240,240),2)
 
@@ -111,7 +111,7 @@ if __name__=="__main__":
 	green_tracker = ColorTracker("green_tracker")
 	green_tracker.set_color(np.array([50, 50, 50],np.uint8),np.array([70, 255, 255],np.uint8))
 	red_tracker = ColorTracker("red_tracker")
-	red_tracker.set_color(np.array([0,50,50],np.uint8),np.array([10,255,255],np.uint8))	
+	red_tracker.set_color(np.array([0, 150, 0],np.uint8),np.array([10,255,255],np.uint8))	
 	display = ImageDisplay("display", title="Color Tracker")
 	pipeline = Pipeline()
 	pipeline.add_elements([capture, blue_tracker, green_tracker, red_tracker, display])
