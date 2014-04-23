@@ -46,8 +46,6 @@ class ImageDisplay(elementBase):
 class ColorTracker(elementBase):
 	def __init__(self, name):
 		elementBase.__init__(self, name)
-		#~ self.source = None
-		#~ self.image = None
 		self.center_x = None
 		self.center_y = None
 		self.color_lower = np.array([120, 80, 80],np.uint8)
@@ -133,9 +131,6 @@ class rover_proyect(object):
 			return "l"
 		else:
 			return "f"
-				
-			
-	
 		
 if __name__=="__main__":	
 	capture = ImageCapture("capture")
