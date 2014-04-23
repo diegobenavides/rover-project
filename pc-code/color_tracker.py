@@ -6,7 +6,7 @@ import numpy as np
 class ColorTracker(object):
 	def __init__(self):
 		cv2.namedWindow("Color Tracker", cv2.CV_WINDOW_AUTOSIZE)
-		self.capture = cv2.VideoCapture(0)
+		self.capture = cv2.VideoCapture(1)
 		self.running = True
 		self.center_x = None
 		self.center_y = None
@@ -20,6 +20,12 @@ class ColorTracker(object):
 	def get_image(self):
 		retval, image = self.capture.read()
 		return image
+	
+	def get_Xvalue(self):
+		return self.center_x
+	
+	def get_Yvalue(self):
+		return self.center_y		
 	
 	def run(self):
 		while self.running:
@@ -58,8 +64,45 @@ class ColorTracker(object):
 				self.capture.release()
 				self.running = False
 
+class rover_proyect(object):
+	def __init__(self):
+		self.rotation = "l"
+		self.search_goal = False
+		self.point_x = None
+		self.arr_dist = [6,1,2,3,8,2] 
+		self.min_dist = 25.0
+		
+	def is_goal(self,f_goal):
+		if (f_goal == True):
+			self.search_goal == f_goal
+			self.point_x = get_Xvalue()
+		else:
+			return self.rotation			
+		
+	def center_goal(self):
+		if (self.point_x < 200):
+			return "r"
+		elif (self.point_x < 300):
+			return "l"
+		
+	def move_goal(self):
+		#for i in range(len(self.arr_dist)):
+		if (self.arr_dist[2]<self.min_dist):
+			return "r"
+		elif (self.arr_dist[3]<self.min_dist):
+			return "l"
+		else:
+			return "f"
+				
+			
+	
+
 if __name__=="__main__":
-	color_tracker=ColorTracker()
+	color_tracker = ColorTracker()
 	# search for blue
 	color_tracker.set_color(np.array([110,50,50],np.uint8),np.array([130,255,255],np.uint8))
+	print "Here"
 	color_tracker.run()
+	
+		
+	
