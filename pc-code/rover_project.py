@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from color_tracker import *
+from serial_comunication import *
+
 class rover_project(object):
 	def __init__(self):
 		self.rotation = "l"
@@ -32,7 +35,18 @@ class rover_project(object):
 
 
 def main():
-	
+	capture = ImageCapture("capture")
+	blue_tracker = ColorTracker("blue_tracker")
+	# search for blue color
+	blue_tracker.set_color(np.array([110,50,50],np.uint8),np.array([130,255,255],np.uint8))
+	display = ImageDisplay("display", title="Color Tracker")
+	# connect elements
+	blue_tracker.set_source(capture)
+	display.set_source(blue_tracker)
+	while True:
+		capture.run()
+		blue_tracker.run()
+		display.run()
 	return 0
 
 if __name__ == '__main__':
