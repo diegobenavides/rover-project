@@ -6,10 +6,8 @@ class arduinoCom(object):
 	def __init__(self):
 		try:
 			for device in range(0,5):
-				self.arduino = serial.Serial("/dev/ttyACM%i"+device,9600)
-				self.arduino.timeout = 1
-				print("connected through %s", device)
-				time.sleep(1)
+				self.arduino = serial.Serial("/dev/ttyACM%i" %device,9600)
+				print("connected through /dev/ttyACM%i", device)
 				break
 		except:
 			print("Can not connect to arduino device")
