@@ -7,7 +7,7 @@ class arduinoCom(object):
 		try:
 			for device in range(0,5):
 				self.arduino = serial.Serial("/dev/ttyACM%i" %device,9600)
-				print("connected through /dev/ttyACM%i", device)
+				print("connected through /dev/ttyACM%i" %device)
 				break
 		except:
 			print("Can not connect to arduino device")
