@@ -2,6 +2,7 @@ import serial
 import time
 import sys
 
+
 class arduinoCom(object):
 	def __init__(self):
 		try:
@@ -10,23 +11,38 @@ class arduinoCom(object):
 		except:
 			print("Can not connect to arduino device")
 			sys.exit(-1)
-			#time.sleep(0.5)
+		#time.sleep(0.5)
 			
 	def write(self, message):
 		 self.arduino.write(str(message))
 		 
 	def readline_A(self):
-		 self.arduino.readline()
+		 return self.arduino.readline()
 	
 	
 def main():
 	
 	test = arduinoCom()
 	
+	
+	while True:
+		test.write("q")
+		print test.arduino.readline()
+		print "HEre"
+		
+		 
+		
+	"""
+	while True:
+		test.write("q")
+		a = test.arduino.readline()
+		print "data",a
+		 
+
 	print "Here"
 	while True:
 		print test.readline_A()
-	"""	
+	
 	#print "Here ",test.arduino.readline()
 	print "Reading... ",test.arduino.readline()
 	#test.write("R")
