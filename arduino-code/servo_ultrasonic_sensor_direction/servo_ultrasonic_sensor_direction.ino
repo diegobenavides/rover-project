@@ -15,7 +15,7 @@
 #define TRIGGER_PIN  8 
 #define ECHO_PIN     11 
 #define INTERVAL 100 //Time define between samples in dist sensor
-#define DELAY 50
+#define DELAY 250
 #define BIGDELAY 1000000
 
 
@@ -78,18 +78,19 @@ void setup()
 
 void loop()
 {
-  d();
   //serial_communication();
   
   //This is working fine
   
-  
+  serial_communication();
+  /*
   if (next_meas <= millis()) {
     next_meas = millis() + INTERVAL;
     servo_move(*current_angle,*current_dir);
   
   }
-  serial_communication();
+  
+  
   //evade_obst(field_vision);
   
   
